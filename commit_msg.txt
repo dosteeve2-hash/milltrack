@@ -1,0 +1,5 @@
+feat: scaffold initial MillTrack — suivi production usines transformation
+
+Part of FORGE Afrika ecosystem.
+
+Co-authored-by: Claude <claude@anthropic.com>
