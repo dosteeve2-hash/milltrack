@@ -12,6 +12,8 @@ import {
   Factory,
   LogOut,
   MapPin,
+  Users,
+  Settings,
 } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 import { signOut } from '@/app/actions/auth'
@@ -23,6 +25,8 @@ const navItems = [
   { href: '/machines', label: 'Machines', icon: Wrench },
   { href: '/dashboard/stocks', label: 'Stocks', icon: Archive },
   { href: '/dashboard/rapports', label: 'Rapports', icon: FileBarChart2 },
+  { href: '/fournisseurs', label: 'Fournisseurs', icon: Users },
+  { href: '/parametres', label: 'Paramètres', icon: Settings },
 ]
 
 export default function SidebarNav({ user }: { user: User }) {
