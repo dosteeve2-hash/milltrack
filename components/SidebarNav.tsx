@@ -14,6 +14,7 @@ import {
   MapPin,
   Users,
   Settings,
+  Truck,
 } from 'lucide-react'
 import type { User } from '@supabase/supabase-js'
 import { signOut } from '@/app/actions/auth'
@@ -21,11 +22,13 @@ import { signOut } from '@/app/actions/auth'
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/lots', label: 'Lots', icon: Package },
-  { href: '/dashboard/production', label: 'Production', icon: Activity },
+  { href: '/production', label: 'Mouture', icon: Factory },
+  { href: '/dashboard/production', label: 'Cycles', icon: Activity },
   { href: '/machines', label: 'Machines', icon: Wrench },
   { href: '/dashboard/stocks', label: 'Stocks', icon: Archive },
   { href: '/dashboard/rapports', label: 'Rapports', icon: FileBarChart2 },
-  { href: '/fournisseurs', label: 'Fournisseurs', icon: Users },
+  { href: '/clients', label: 'Clients', icon: Users },
+  { href: '/fournisseurs', label: 'Fournisseurs', icon: Truck },
   { href: '/parametres', label: 'Paramètres', icon: Settings },
 ]
 
