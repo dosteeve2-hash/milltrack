@@ -4,6 +4,13 @@
 
 [![Status](https://img.shields.io/badge/Status-En%20conception-blue)](.)
 [![Part of FORGE Afrika](https://img.shields.io/badge/FORGE%20Afrika-Ecosystem-D4AF37)](https://github.com/dosteeve2-hash/forge-afrika)
+[![Demo](https://img.shields.io/badge/Demo-Voir%20live-D4AF37?style=for-the-badge)](https://milltrack.vercel.app)
+
+## 🌍 Demo Live
+
+**Application live :** https://milltrack.vercel.app
+
+> Suivi de production en temps réel pour usines de transformation africaines — minoteries, huileries, CEDEAO
 
 ## 🎯 Problème résolu
 

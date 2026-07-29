@@ -5,20 +5,21 @@ import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   Package,
-  Activity,
   Wrench,
   Archive,
   FileBarChart2,
   Factory,
+  Users,
 } from 'lucide-react'
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/lots', label: 'Lots', icon: Package },
-  { href: '/production', label: 'Production', icon: Activity },
-  { href: '/machines', label: 'Machines', icon: Wrench },
-  { href: '/stocks', label: 'Stocks', icon: Archive },
-  { href: '/rapports', label: 'Rapports', icon: FileBarChart2 },
+  { href: '/dashboard',   label: 'Dashboard',  icon: LayoutDashboard },
+  { href: '/lots',        label: 'Lots',        icon: Package         },
+  { href: '/production',  label: 'Production',  icon: Factory         },
+  { href: '/clients',     label: 'Clients',     icon: Users           },
+  { href: '/machines',    label: 'Machines',    icon: Wrench          },
+  { href: '/stocks',      label: 'Stocks',      icon: Archive         },
+  { href: '/rapports',    label: 'Rapports',    icon: FileBarChart2   },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
