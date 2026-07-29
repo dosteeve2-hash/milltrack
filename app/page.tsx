@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   ArrowRight,
 } from 'lucide-react'
+import { hoverScale } from '@/lib/animations'
 
 const features = [
   {
@@ -140,7 +141,8 @@ export default function LandingPage() {
             <motion.div
               key={f.title}
               variants={fadeUp}
-              className="p-6 rounded-2xl flex gap-4"
+              {...hoverScale}
+              className="p-6 rounded-2xl flex gap-4 cursor-default"
               style={{ backgroundColor: '#111e35', border: '1px solid rgba(255,255,255,0.08)' }}
             >
               <div className="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(0,188,212,0.15)' }}>
