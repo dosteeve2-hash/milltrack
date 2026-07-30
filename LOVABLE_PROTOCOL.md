@@ -43,3 +43,70 @@ https://milltrack.vercel.app
 - **Icônes** : Lucide React
 - **Charts** : Recharts (rendements, tendances, comparatifs)
 - **Monitoring** : Sentry
+
+## Stack Technique
+- **Frontend** : Next.js 16 (App Router), React 19, TypeScript
+- **Styles** : Tailwind CSS v4, tw-animate-css
+- **Animations** : Framer Motion v12
+- **Backend** : Supabase (PostgreSQL, Auth, Realtime)
+- **Composants** : shadcn/ui + Base UI
+- **Charts** : Recharts (rendements, tendances)
+- **Tests** : Vitest + Testing Library
+- **Monitoring** : Sentry
+- **Déploiement** : Vercel
+
+## Modèle de données
+
+### Table `production_lots`
+| Champ | Type | Description |
+|-------|------|-------------|
+| id | uuid | PK |
+| raw_material | text | blé / maïs / sésame / karité / arachide |
+| supplier_id | uuid | FK suppliers |
+| input_weight_kg | numeric | Poids entrée (kg) |
+| output_weight_kg | numeric | Poids sortie produit fini (kg) |
+| yield_pct | numeric | Rendement % (calculé) |
+| started_at | timestamp | Début production |
+| completed_at | timestamp | Fin production |
+| quality_grade | text | A / B / C |
+
+### Table `machines`
+| Champ | Type | Description |
+|-------|------|-------------|
+| id | uuid | PK |
+| name | text | Nom machine |
+| type | text | broyeur / presse / ensacheuse |
+| status | enum | operationnel / maintenance / panne |
+| last_maintenance | date | Dernière maintenance |
+| next_maintenance | date | Prochaine maintenance prévue |
+
+### Table `maintenance_logs`
+| Champ | Type | Description |
+|-------|------|-------------|
+| id | uuid | PK |
+| machine_id | uuid | FK machines |
+| type | enum | preventive / corrective / urgence |
+| description | text | Description intervention |
+| cost_fcfa | numeric | Coût FCFA |
+| technician | text | Technicien responsable |
+| performed_at | timestamp | Date intervention |
+
+## Flux utilisateur clé — Traitement d'un lot de sésame
+
+1. Réception fournisseur → Lassana crée lot : 2 tonnes sésame grade A, fournisseur coopérative Kaya
+2. Lancement production → démarre timer process, assigne opérateur
+3. Fin process → saisit poids sortie : 1,72 tonnes huile → rendement calculé : 86%
+4. Rapport lot généré → anomalie si rendement < 80% (alerte dashboard)
+5. Produit fini ajouté en stock → disponible pour vente ValueChain Connect
+6. Mariam consulte analytics rendements → comparaison avec lots précédents via Recharts
+
+## Critères de succès
+- Dashboard rendements charge en < 2 secondes (Supabase Realtime)
+- Calcul rendement automatique à la saisie du poids sortie
+- Alertes maintenance préventive envoyées J-7 avant échéance
+- Rapports PDF/Excel générés en < 5 secondes
+- Zéro erreur `npm run build`
+- Compatible tablette Android (interface terrain techniciens)
+
+---
+*Lovable Protocol v1.0 — FORGE Afrika © 2025 — Steeve Donald Compaore*
