@@ -28,6 +28,9 @@ import {
   Clock,
 } from 'lucide-react'
 import AlertesMaintenance from '@/components/AlertesMaintenance'
+import ObjectifsProduction from '@/components/ObjectifsProduction'
+import PlanningMaintenance from '@/components/PlanningMaintenance'
+import TopClients from '@/components/TopClients'
 
 interface Stats {
   lotsEnCours: number
@@ -161,6 +164,9 @@ export default function DashboardClient({ stats, lotsActifs }: { stats: Stats; l
         ))}
       </div>
 
+      {/* ── Objectifs de production ─────────────────────────────── */}
+      <ObjectifsProduction />
+
       <div className="grid lg:grid-cols-2 gap-6" style={{ marginBottom: '2rem' }}>
         {/* AreaChart */}
         <motion.div
@@ -239,6 +245,12 @@ export default function DashboardClient({ stats, lotsActifs }: { stats: Stats; l
 
         {/* Alertes maintenance — au-dessus des graphiques */}
         <AlertesMaintenance />
+
+        {/* Planning maintenance + Top clients */}
+        <div className="grid lg:grid-cols-2 gap-6" style={{ marginBottom: '1.5rem' }}>
+          <PlanningMaintenance />
+          <TopClients />
+        </div>
 
         {/* Graphiques — 3 colonnes */}
         <div className="grid lg:grid-cols-3 gap-6">
