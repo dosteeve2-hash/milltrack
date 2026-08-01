@@ -5,6 +5,14 @@ import { motion } from 'framer-motion'
 import {
   AreaChart,
   Area,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -19,6 +27,7 @@ import {
   CheckCircle2,
   Clock,
 } from 'lucide-react'
+import AlertesMaintenance from '@/components/AlertesMaintenance'
 
 interface Stats {
   lotsEnCours: number
@@ -49,6 +58,33 @@ const CHART_DATA = [
   { jour: 'Ven', production: 21.3 },
   { jour: 'Sam', production: 14.6 },
   { jour: 'Dim', production: 24.6 },
+]
+
+// ── Données analytiques mensuelles ─────────────────────────────
+const MONTHLY_PRODUCTION = [
+  { mois: 'Jan', farineBlanche: 42.5, farinemais: 28.3, sonBle: 12.1 },
+  { mois: 'Fév', farineBlanche: 38.2, farinemais: 31.4, sonBle: 10.8 },
+  { mois: 'Mar', farineBlanche: 51.7, farinemais: 26.9, sonBle: 14.3 },
+  { mois: 'Avr', farineBlanche: 47.3, farinemais: 33.5, sonBle: 13.6 },
+  { mois: 'Mai', farineBlanche: 55.1, farinemais: 29.8, sonBle: 15.9 },
+  { mois: 'Jun', farineBlanche: 49.8, farinemais: 35.2, sonBle: 14.1 },
+  { mois: 'Jul', farineBlanche: 58.4, farinemais: 31.7, sonBle: 16.8 },
+]
+
+const MONTHLY_FINANCES = [
+  { mois: 'Jan', revenus: 4.25, depenses: 3.12 },
+  { mois: 'Fév', revenus: 3.82, depenses: 2.98 },
+  { mois: 'Mar', revenus: 5.17, depenses: 3.56 },
+  { mois: 'Avr', revenus: 4.73, depenses: 3.28 },
+  { mois: 'Mai', revenus: 5.51, depenses: 3.79 },
+  { mois: 'Jun', revenus: 4.98, depenses: 3.44 },
+  { mois: 'Jul', revenus: 5.84, depenses: 3.92 },
+]
+
+const PIE_DATA = [
+  { name: 'Farine Blanche', value: 58.4, color: '#D4AF37' },
+  { name: 'Farine Maïs',    value: 31.7, color: '#00BCD4' },
+  { name: 'Son de Blé',     value: 16.8, color: '#4ade80' },
 ]
 
 const fadeUp = {
@@ -125,7 +161,7 @@ export default function DashboardClient({ stats, lotsActifs }: { stats: Stats; l
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-6" style={{ marginBottom: '2rem' }}>
         {/* AreaChart */}
         <motion.div
           custom={4}
@@ -189,6 +225,111 @@ export default function DashboardClient({ stats, lotsActifs }: { stats: Stats; l
           </div>
         </motion.div>
       </div>
+
+      {/* ── Section analytique ─────────────────────────────────── */}
+      <motion.div
+        custom={6}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+      >
+        <h2 className="text-lg font-bold mb-5" style={{ color: '#f0f4ff' }}>
+          Tableau de bord analytique
+        </h2>
+
+        {/* Alertes maintenance — au-dessus des graphiques */}
+        <AlertesMaintenance />
+
+        {/* Graphiques — 3 colonnes */}
+        <div className="grid lg:grid-cols-3 gap-6">
+
+          {/* LineChart — Production mensuelle */}
+          <div
+            className="p-6 rounded-2xl lg:col-span-2"
+            style={{ backgroundColor: '#111e35', border: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <p className="font-semibold mb-1" style={{ color: '#f0f4ff' }}>Production mensuelle (tonnes)</p>
+            <p className="text-xs mb-4" style={{ color: '#8899bb' }}>Janv – Juil 2026</p>
+            {mounted ? (
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={MONTHLY_PRODUCTION}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                  <XAxis dataKey="mois" tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} unit="t" />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0f1f3d', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: '#f0f4ff', fontSize: 12 }}
+                    formatter={(v) => [`${v} t`]}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 11, color: '#8899bb', paddingTop: 8 }} />
+                  <Line type="monotone" dataKey="farineBlanche" name="Farine Blanche" stroke="#D4AF37" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="farinemais"    name="Farine Maïs"    stroke="#00BCD4" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="sonBle"        name="Son de Blé"      stroke="#4ade80" strokeWidth={2} dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : null}
+          </div>
+
+          {/* PieChart — Répartition produits moulus */}
+          <div
+            className="p-6 rounded-2xl"
+            style={{ backgroundColor: '#111e35', border: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <p className="font-semibold mb-1" style={{ color: '#f0f4ff' }}>Répartition produits</p>
+            <p className="text-xs mb-4" style={{ color: '#8899bb' }}>Juillet 2026</p>
+            {mounted ? (
+              <ResponsiveContainer width="100%" height={220}>
+                <PieChart>
+                  <Pie
+                    data={PIE_DATA}
+                    cx="50%"
+                    cy="45%"
+                    innerRadius={55}
+                    outerRadius={80}
+                    paddingAngle={3}
+                    dataKey="value"
+                  >
+                    {PIE_DATA.map((entry, i) => (
+                      <Cell key={i} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0f1f3d', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: '#f0f4ff', fontSize: 12 }}
+                    formatter={(v) => [`${v} t`]}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 11, color: '#8899bb' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : null}
+          </div>
+
+          {/* BarChart — Revenus vs Dépenses */}
+          <div
+            className="p-6 rounded-2xl lg:col-span-3"
+            style={{ backgroundColor: '#111e35', border: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <p className="font-semibold mb-1" style={{ color: '#f0f4ff' }}>Revenus vs Dépenses</p>
+            <p className="text-xs mb-4" style={{ color: '#8899bb' }}>En millions FCFA · Janv – Juil 2026</p>
+            {mounted ? (
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={MONTHLY_FINANCES} barCategoryGap="30%">
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                  <XAxis dataKey="mois" tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} unit="M" />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0f1f3d', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: '#f0f4ff', fontSize: 12 }}
+                    formatter={(v) => [`${v} M FCFA`]}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 11, color: '#8899bb', paddingTop: 8 }} />
+                  <Bar dataKey="revenus"  name="Revenus"  fill="#D4AF37" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="depenses" name="Dépenses" fill="#00BCD4" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : null}
+          </div>
+
+        </div>
+      </motion.div>
+
     </div>
   )
 }
