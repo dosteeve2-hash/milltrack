@@ -11,10 +11,12 @@ import {
   Factory,
   Users,
   ClipboardList,
+  Cog,
 } from 'lucide-react'
 
 const navItems = [
   { href: '/dashboard',   label: 'Dashboard',   icon: LayoutDashboard },
+  { href: '/broyages',    label: 'Broyages',    icon: Cog             },
   { href: '/lots',        label: 'Lots',         icon: Package         },
   { href: '/production',  label: 'Production',   icon: Factory         },
   { href: '/clients',     label: 'Clients',      icon: Users           },
