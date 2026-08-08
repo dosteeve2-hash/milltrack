@@ -12,6 +12,7 @@ import {
   Users,
   ClipboardList,
   Cog,
+  Settings,
 } from 'lucide-react'
 
 const navItems = [
@@ -20,7 +21,8 @@ const navItems = [
   { href: '/lots',        label: 'Lots',         icon: Package         },
   { href: '/production',  label: 'Production',   icon: Factory         },
   { href: '/clients',     label: 'Clients',      icon: Users           },
-  { href: '/machines',    label: 'Machines',     icon: Wrench          },
+  { href: '/machines',     label: 'Machines',     icon: Wrench          },
+  { href: '/maintenance',  label: 'Maintenance',  icon: Settings        },
   { href: '/stocks',      label: 'Stocks',       icon: Archive         },
   { href: '/commandes',   label: 'Commandes',    icon: ClipboardList   },
   { href: '/rapports',    label: 'Rapports',     icon: FileBarChart2   },
