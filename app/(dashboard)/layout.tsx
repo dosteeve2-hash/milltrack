@@ -13,6 +13,7 @@ import {
   ClipboardList,
   Cog,
   Settings,
+  ShoppingCart,
 } from 'lucide-react'
 
 const navItems = [
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/machines',     label: 'Machines',     icon: Wrench          },
   { href: '/maintenance',  label: 'Maintenance',  icon: Settings        },
   { href: '/stocks',      label: 'Stocks',       icon: Archive         },
+  { href: '/ventes',      label: 'Ventes',       icon: ShoppingCart    },
   { href: '/commandes',   label: 'Commandes',    icon: ClipboardList   },
   { href: '/rapports',    label: 'Rapports',     icon: FileBarChart2   },
 ]
