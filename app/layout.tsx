@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'MillTrack — Suivi production usines',
   description: 'Plateforme de suivi de production pour minoteries et huileries. Lots, machines, rendements analytics.',
+  icons: {
+    apple: '/apple-touch-icon.png',
+    icon: '/android-chrome-192x192.png',
+  },
+  manifest: '/site.webmanifest',
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
