@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, type CSSProperties } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import {
   ComposedChart, Bar, Line, LineChart, BarChart,
@@ -13,6 +13,7 @@ import {
   Download, Calendar, AlertCircle, Star,
 } from 'lucide-react'
 import { toast, Toaster } from 'sonner'
+import { useHydrated } from "@/lib/useHydrated"
 
 // ── Palette ──────────────────────────────────────────────────────────────────
 const NAVY   = '#0A1628'
@@ -110,12 +111,21 @@ const fadeUp = {
 }
 
 // ── Composant PieChart label ──────────────────────────────────────────────────
+/**
+ * Recharts ne garantit aucun de ces champs : son type de rendu les déclare
+ * tous optionnels. Les typer comme obligatoires (masqué jusqu'ici par un
+ * `any` à l'appel) aurait produit des coordonnées NaN si l'un manquait.
+ */
 interface PieLabelProps {
-  cx: number; cy: number; midAngle: number; innerRadius: number
-  outerRadius: number; percent: number; name: string
+  cx?: number; cy?: number; midAngle?: number; innerRadius?: number
+  outerRadius?: number; percent?: number; name?: string
 }
 const RADIAN = Math.PI / 180
 function PieLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: PieLabelProps) {
+  if (
+    cx === undefined || cy === undefined || midAngle === undefined ||
+    innerRadius === undefined || outerRadius === undefined || percent === undefined
+  ) return null
   if (percent < 0.06) return null
   const r = innerRadius + (outerRadius - innerRadius) * 0.5
   const x = cx + r * Math.cos(-midAngle * RADIAN)
@@ -137,9 +147,8 @@ const tooltipLabel: CSSProperties = { color: TEXT }
 // ─────────────────────────────────────────────────────────────────────────────
 export default function RapportsPage() {
   const [periode, setPeriode] = useState<Periode>('month')
-  const [mounted, setMounted] = useState(false)
+  const mounted = useHydrated()
 
-  useEffect(() => setMounted(true), [])
 
   const kpi = KPI_DATA[periode]
   const rendementAlert = kpi.rendement < 80
@@ -332,7 +341,7 @@ export default function RapportsPage() {
                   data={DATA_PIE} cx="50%" cy="50%"
                   outerRadius={88} dataKey="value"
                   labelLine={false}
-                  label={(props: any) => <PieLabel {...props} />}
+                  label={(props: PieLabelProps) => <PieLabel {...props} />}
                 >
                   {DATA_PIE.map((_, idx) => (
                     <Cell key={idx} fill={PIE_COLORS[idx % PIE_COLORS.length]} />

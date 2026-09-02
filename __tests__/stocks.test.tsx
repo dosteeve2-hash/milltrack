@@ -8,14 +8,15 @@ vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() }, Toaster:
 describe('StocksPage', () => {
   it('affiche le titre de la page', () => {
     render(<StocksPage />)
-    expect(screen.getByRole('heading', { name: 'Stocks matières' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Stocks matières & produits' })).toBeInTheDocument()
   })
 
-  it('affiche les 8 matières premières', () => {
+  it('affiche les 10 articles en stock', () => {
     render(<StocksPage />)
     const noms = [
       'Maïs brut', 'Blé tendre', 'Sorgho', 'Soja',
-      'Son de blé (stocké)', 'Farine blanche', 'Farine de maïs', 'Farine de soja',
+      'Farine T45', 'Farine T55', 'Farine T65',
+      'Semoule', 'Farine de maïs', 'Son de blé',
     ]
     noms.forEach(nom => {
       expect(screen.getByText(nom)).toBeInTheDocument()
@@ -37,16 +38,16 @@ describe('StocksPage', () => {
     expect(within(row).getByText('Critique')).toBeInTheDocument()
   })
 
-  it('affiche le badge Bas pour un stock faible (Maïs brut 24.8%)', () => {
+  it('affiche le badge Faible pour un stock bas (Maïs brut 12.4/50 = 24.8%)', () => {
     render(<StocksPage />)
     const row = screen.getByText('Maïs brut').closest('tr') as HTMLElement
     expect(row).not.toBeNull()
-    expect(within(row).getByText('Bas')).toBeInTheDocument()
+    expect(within(row).getByText('Faible')).toBeInTheDocument()
   })
 
-  it('affiche le badge Normal pour un stock correct (Farine blanche 73%)', () => {
+  it('affiche le badge Normal pour un stock correct (Farine T55 18.3/30 = 61%)', () => {
     render(<StocksPage />)
-    const row = screen.getByText('Farine blanche').closest('tr') as HTMLElement
+    const row = screen.getByText('Farine T55').closest('tr') as HTMLElement
     expect(row).not.toBeNull()
     expect(within(row).getByText('Normal')).toBeInTheDocument()
   })
@@ -54,7 +55,7 @@ describe('StocksPage', () => {
   it('ouvre le modal Entrée stock au clic sur le bouton', () => {
     render(<StocksPage />)
     expect(screen.queryByRole('heading', { name: 'Entrée stock' })).not.toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: /entrée stock/i }))
+    fireEvent.click(screen.getByRole('button', { name: 'Entrée' }))
     expect(screen.getByRole('heading', { name: 'Entrée stock' })).toBeInTheDocument()
   })
 })

@@ -5,7 +5,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts'
 import { toast, Toaster } from 'sonner'
-import { Wrench, AlertTriangle, CheckCircle, Clock, Plus, X, Calendar, Cog } from 'lucide-react'
+import { Wrench, AlertTriangle, CheckCircle, Plus, X, Calendar, Cog } from 'lucide-react'
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const NAVY   = '#0A1628'
@@ -361,7 +361,7 @@ export default function MaintenancePage() {
                   <EtatBadge etat={m.etat} />
                 </div>
                 <div style={{ display:'flex', justifyContent:'space-between', fontSize:11, color:TEXT3 }}>
-                  <span>{m.heuresUtilisation.toLocaleString('fr-FR')} h d'utilisation</span>
+                  <span>{m.heuresUtilisation.toLocaleString('fr-FR')} h d&apos;utilisation</span>
                   <span style={{ color: j <= 0 ? RED : j <= 7 ? RED : j <= 14 ? ORANGE : GREEN, fontWeight:600 }}>
                     {j >= 0 ? `Maint. J-${j}` : `En retard J+${Math.abs(j)}`}
                   </span>

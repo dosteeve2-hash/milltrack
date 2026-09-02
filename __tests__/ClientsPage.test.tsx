@@ -15,12 +15,12 @@ vi.mock('framer-motion', () => ({
 }))
 
 vi.mock('recharts', () => ({
-  ResponsiveContainer: ({ children }: any) => <div>{children}</div>,
-  BarChart: ({ children }: any) => <div data-testid="bar-chart">{children}</div>,
+  ResponsiveContainer: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
+  BarChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="bar-chart">{children}</div>,
   Bar: () => null,
-  LineChart: ({ children }: any) => <div data-testid="line-chart">{children}</div>,
+  LineChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="line-chart">{children}</div>,
   Line: () => null,
-  PieChart: ({ children }: any) => <div data-testid="pie-chart">{children}</div>,
+  PieChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="pie-chart">{children}</div>,
   Pie: () => null,
   Cell: () => null,
   XAxis: () => null,
@@ -28,14 +28,15 @@ vi.mock('recharts', () => ({
   CartesianGrid: () => null,
   Tooltip: () => null,
   Legend: () => null,
-  ComposedChart: ({ children }: any) => <div data-testid="composed-chart">{children}</div>,
+  ComposedChart: ({ children }: { children?: React.ReactNode }) => <div data-testid="composed-chart">{children}</div>,
 }))
 
 // ── Rendu de base ────────────────────────────────────────────────
 describe('ClientsPage — rendu de base', () => {
   it('1. affiche le titre "Clients"', () => {
     render(<ClientsPage />)
-    expect(screen.getByRole('heading', { name: /clients/i })).toBeInTheDocument()
+    // /clients/i matchait aussi le h2 « Top 5 clients par kg traités ».
+    expect(screen.getByRole('heading', { level: 1, name: 'Clients' })).toBeInTheDocument()
   })
 
   it('2. affiche le sous-titre "Gestion des clients du moulin"', () => {
@@ -233,7 +234,9 @@ describe('ClientsPage — modal nouveau client', () => {
   it('34. le modal contient le champ "Village"', () => {
     render(<ClientsPage />)
     fireEvent.click(screen.getByRole('button', { name: /nouveau client/i }))
-    expect(screen.getByText('Village')).toBeInTheDocument()
+    // « Village » est aussi un en-tête de colonne du tableau : on cible le
+    // champ par son étiquette, ce qui vérifie au passage leur association.
+    expect(screen.getByLabelText('Village')).toBeInTheDocument()
   })
 
   it('35. le modal contient le bouton "Enregistrer"', () => {

@@ -138,8 +138,8 @@ export default function CommandesPage() {
           <BarChart data={CHART_DATA}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
             <XAxis dataKey="type" tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => `${(v / 1000).toFixed(0)}t`} />
-            <Tooltip contentStyle={{ backgroundColor: '#0c1a34', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8, color: 'white', fontSize: 12 }} formatter={(v: any) => [`${v.toLocaleString()} kg`, 'Volume']} />
+            <YAxis tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(Number(v) / 1000).toFixed(0)}t`} />
+            <Tooltip contentStyle={{ backgroundColor: '#0c1a34', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8, color: 'white', fontSize: 12 }} formatter={(v) => [typeof v === 'number' ? `${v.toLocaleString('fr-FR')} kg` : String(v), 'Volume']} />
             <Bar dataKey="kg" fill="#D4AF37" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
