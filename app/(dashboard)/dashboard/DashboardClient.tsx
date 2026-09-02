@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   AreaChart,
@@ -31,6 +30,7 @@ import AlertesMaintenance from '@/components/AlertesMaintenance'
 import ObjectifsProduction from '@/components/ObjectifsProduction'
 import PlanningMaintenance from '@/components/PlanningMaintenance'
 import TopClients from '@/components/TopClients'
+import { useHydrated } from "@/lib/useHydrated"
 
 interface Stats {
   lotsEnCours: number
@@ -119,8 +119,7 @@ function StatutBadge({ statut }: { statut: string }) {
 }
 
 export default function DashboardClient({ stats, lotsActifs }: { stats: Stats; lotsActifs: Lot[] }) {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  const mounted = useHydrated()
 
   const statCards = [
     { label: 'Lots en cours', value: stats.lotsEnCours, unit: '', icon: Package, color: '#D4AF37' },

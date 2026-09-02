@@ -135,8 +135,8 @@ export default function StocksPage() {
           <BarChart data={chartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
             <XAxis dataKey="nom" tick={{ fill: '#8899bb', fontSize: 10 }} axisLine={false} tickLine={false} />
-            <YAxis domain={[0, 100]} tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => `${v}%`} />
-            <Tooltip contentStyle={{ backgroundColor: '#0c1a34', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8, color: 'white', fontSize: 12 }} formatter={(v: any) => [`${v}%`, 'Remplissage']} />
+            <YAxis domain={[0, 100]} tick={{ fill: '#8899bb', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
+            <Tooltip contentStyle={{ backgroundColor: '#0c1a34', border: '1px solid rgba(212,175,55,0.3)', borderRadius: 8, color: 'white', fontSize: 12 }} formatter={(v) => [`${v}%`, 'Remplissage']} />
             <Bar dataKey="pct" radius={[4, 4, 0, 0]}>
               {chartData.map((entry, index) => (
                 <Cell key={index} fill={entry.pct < 20 ? '#f87171' : entry.pct < 40 ? '#fb923c' : '#D4AF37'} />

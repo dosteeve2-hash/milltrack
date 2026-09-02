@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Factory, TrendingUp, Plus, X, AlertTriangle } from 'lucide-react'
+import { useHydrated } from "@/lib/useHydrated"
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from 'recharts'
@@ -84,7 +85,7 @@ const inputStyle = { backgroundColor: '#0A1628', border: '1px solid rgba(255,255
 const labelStyle = { color: '#8899bb' }
 
 export default function ProductionMouturePage() {
-  const [mounted, setMounted] = useState(false)
+  const mounted = useHydrated()
   const [showModal, setShowModal] = useState(false)
   const [form, setForm] = useState<NouvelleEntree>({
     date: '2026-07-18',
@@ -94,7 +95,6 @@ export default function ProductionMouturePage() {
     operateur: OPERATEURS[0],
   })
 
-  useEffect(() => setMounted(true), [])
 
   const today = MOCK_MOUTURE.find(m => m.date === '2026-07-18') ?? MOCK_MOUTURE[0]
   const bleT       = (today.poidsEntrant / 1000).toFixed(1)

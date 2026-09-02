@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, Search, Eye, X, Package, TrendingUp, Factory, CheckCircle } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { useHydrated } from "@/lib/useHydrated"
 
 interface Lot {
   id: string; reference: string; matierePremiere: string; fournisseur: string
@@ -36,8 +37,7 @@ export default function LotsClient({ lots }: { lots: Lot[] }) {
   const [filtre,   setFiltre]   = useState('Tous')
   const [search,   setSearch]   = useState('')
   const [selected, setSelected] = useState<Lot | null>(null)
-  const [mounted,  setMounted]  = useState(false)
-  useEffect(() => setMounted(true), [])
+  const mounted = useHydrated()
 
   const filtered = lots.filter(l => {
     const matchF = filtre === 'Tous' || l.statut === filtre
@@ -106,7 +106,7 @@ export default function LotsClient({ lots }: { lots: Lot[] }) {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                 <XAxis dataKey="name" tick={{ fontSize: 9, fill: '#8899bb' }} angle={-30} textAnchor="end" axisLine={false} tickLine={false} interval={0} />
                 <YAxis tick={{ fontSize: 10, fill: '#8899bb' }} axisLine={false} tickLine={false} domain={[0, 100]} unit="%" />
-                <Tooltip contentStyle={{ background: '#0A1628', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 11, color: 'white' }} formatter={(v: any) => [v + '%', 'Rendement']} />
+                <Tooltip contentStyle={{ background: '#0A1628', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 11, color: 'white' }} formatter={(v) => [v + '%', 'Rendement']} />
                 <Bar dataKey="rendement" radius={[4, 4, 0, 0]}>
                   {chartData.map((d, i) => <Cell key={i} fill={d.color} />)}
                 </Bar>

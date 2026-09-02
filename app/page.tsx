@@ -8,7 +8,6 @@ import {
   Package,
   Wrench,
   TrendingUp,
-  AlertTriangle,
   CheckCircle2,
   ArrowRight,
 } from 'lucide-react'

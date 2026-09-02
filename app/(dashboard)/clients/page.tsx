@@ -289,16 +289,18 @@ export default function ClientsPage() {
                   { label: 'Village',      key: 'village',   placeholder: 'Ex : Kombissiri',         type: 'text' },
                 ] as const).map(field => (
                   <div key={field.key}>
-                    <label className="text-xs font-medium block mb-1" style={labelStyle}>{field.label}</label>
-                    <input type={field.type} value={form[field.key]}
+                    {/* htmlFor/id : sans association, un lecteur d'écran n'annonce
+                        pas l'étiquette du champ. */}
+                    <label htmlFor={`client-${field.key}`} className="text-xs font-medium block mb-1" style={labelStyle}>{field.label}</label>
+                    <input id={`client-${field.key}`} type={field.type} value={form[field.key]}
                       onChange={e => setForm(p => ({ ...p, [field.key]: e.target.value }))}
                       placeholder={field.placeholder}
                       className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={inputStyle} />
                   </div>
                 ))}
                 <div>
-                  <label className="text-xs font-medium block mb-1" style={labelStyle}>Céréale habituelle</label>
-                  <select value={form.cerealeHabituelle}
+                  <label htmlFor="client-cereale" className="text-xs font-medium block mb-1" style={labelStyle}>Céréale habituelle</label>
+                  <select id="client-cereale" value={form.cerealeHabituelle}
                     onChange={e => setForm(p => ({ ...p, cerealeHabituelle: e.target.value as Cereale | '' }))}
                     className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={inputStyle}>
                     <option value="">Sélectionner…</option>
