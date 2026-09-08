@@ -78,7 +78,7 @@ export default function MachinesClient({ machines }: { machines: Machine[] }) {
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.85rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem', marginBottom: '1.5rem' }}>
         {[
           { label: 'Operationnelles',  value: String(operationnelles),  color: '#4ade80', icon: CheckCircle2  },
           { label: 'En panne',         value: String(enPanne),          color: '#f87171', icon: XCircle       },

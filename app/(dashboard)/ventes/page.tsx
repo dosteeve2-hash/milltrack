@@ -226,7 +226,7 @@ export default function VentesPage() {
       </div>
 
       {/* KPIs */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:14 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(150px, 1fr))', gap:14 }}>
         <KpiCard label='CA ventes'       value={`${(caTotal/1_000_000).toFixed(2)}M`}  sub='FCFA hors annulees' color='#D4AF37' icon={TrendingUp}  />
         <KpiCard label='Livrees'         value={ventesLivr}                             sub='ventes confirmees'  color='#22c55e' icon={ShoppingCart} />
         <KpiCard label='Sacs vendus'     value={sacsTotal.toLocaleString('fr-FR')}       sub='total produits'     color='#00D4FF' icon={Package}      />

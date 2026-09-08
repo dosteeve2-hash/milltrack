@@ -78,7 +78,7 @@ export default function LotsClient({ lots }: { lots: Lot[] }) {
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.85rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem', marginBottom: '1.5rem' }}>
         {[
           { label: 'Lots en cours',    value: String(enCours),            color: '#00BCD4', icon: Factory      },
           { label: 'Lots termines',    value: String(termines),           color: '#4ade80', icon: CheckCircle  },
@@ -143,7 +143,11 @@ export default function LotsClient({ lots }: { lots: Lot[] }) {
       {/* Table */}
       <motion.div style={{ backgroundColor: '#111e35', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, overflow: 'hidden' }}
         initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 70 } }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        {/* Sur un telephone de 360 px ce tableau est plus large que l'ecran :
+            il defile horizontalement dans son propre conteneur plutot que de
+            pousser toute la page. */}
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', minWidth: 940, borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
               {['Reference', 'Matiere → Produit', 'Machine', 'Qualite', 'Entree', 'Sortie', 'Rendement', 'Debut', 'Statut', ''].map(h => (
@@ -188,7 +192,8 @@ export default function LotsClient({ lots }: { lots: Lot[] }) {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
         {filtered.length === 0 && (
           <div style={{ padding: '3rem', textAlign: 'center', color: '#8899bb', fontSize: '0.85rem' }}>Aucun lot trouvé</div>
         )}

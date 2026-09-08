@@ -332,7 +332,7 @@ export default function MaintenancePage() {
       )}
 
       {/* KPIs */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:14 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(150px, 1fr))', gap:14 }}>
         <KpiCard label="Operationnelles"  value={`${operationnelles}/${MACHINES.length}`} sub="machines en service"       color={GREEN}  icon={CheckCircle}    />
         <KpiCard label="En maintenance"   value={String(enMaint)}                          sub="arretees pour entretien"  color={CYAN}   icon={Wrench}         />
         <KpiCard label="A surveiller"     value={String(aSurveiller)}                      sub="attention requise"        color={ORANGE} icon={AlertTriangle}  />

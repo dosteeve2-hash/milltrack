@@ -111,7 +111,7 @@ export default function StocksPage() {
       </div>
 
       {/* KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
         {[
           { label: 'Stock total', value: `${total.toFixed(1)} t`, icon: PackageOpen, color: '#00D4FF' },
           { label: 'Valeur totale', value: `${(valeur / 1000).toFixed(0)} k FCFA`, icon: TrendingUp, color: '#D4AF37' },
@@ -157,7 +157,11 @@ export default function StocksPage() {
 
       {/* Table */}
       <div style={{ ...S.card, overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        {/* Sur un telephone de 360 px ce tableau est plus large que l'ecran :
+            il defile horizontalement dans son propre conteneur plutot que de
+            pousser toute la page. */}
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', minWidth: 860, borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ backgroundColor: 'rgba(212,175,55,0.08)' }}>
               {['Article', 'Catégorie', 'Quantité (t)', 'Capacité max', 'Remplissage', 'Statut', 'Valeur', 'Dernière MAJ'].map(h => (
@@ -192,7 +196,8 @@ export default function StocksPage() {
               )
             })}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
 
       {/* Modal Entrée */}
