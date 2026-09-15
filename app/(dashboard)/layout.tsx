@@ -14,7 +14,10 @@ import {
   Cog,
   Settings,
   ShoppingCart,
+  LogOut,
 } from 'lucide-react'
+
+import { signOut } from '@/app/actions/auth'
 
 const navItems = [
   { href: '/dashboard',   label: 'Dashboard',   icon: LayoutDashboard },
@@ -74,8 +77,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         {/* Footer */}
-        <div className="px-6 pt-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
-          <p className="text-xs" style={{ color: 'rgba(240,244,255,0.3)' }}>
+        <div className="px-3 pt-4 border-t space-y-3" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all hover:bg-white/5"
+              style={{ color: 'rgba(240,244,255,0.6)' }}
+            >
+              <LogOut className="w-4 h-4" />
+              Se déconnecter
+            </button>
+          </form>
+          <p className="text-xs px-3" style={{ color: 'rgba(240,244,255,0.3)' }}>
             FORGE Afrika · v1.0
           </p>
         </div>
