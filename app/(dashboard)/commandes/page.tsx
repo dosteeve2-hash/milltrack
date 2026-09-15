@@ -1,6 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { useDonneesPersistees } from '@/lib/persistance-locale'
+import { lireQuantite } from '@/lib/quantite'
+import { prochainIdentifiant } from '@/lib/identifiants'
 import { ClipboardList, Search, X, Plus, CheckCircle, TrendingUp, Clock, Package, BadgeCheck } from 'lucide-react'
 import { Toaster, toast } from 'sonner'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
@@ -30,6 +33,27 @@ const COMMANDES_INITIALES: Commande[] = [
   { id: 'CMD-012', client: 'Roukiatou Sawadogo', quantiteKg: 250, typeMouture: 'Farine de maïs', statut: 'Prête', dateLivraison: '01/08/2026', montantFCFA: 35000 },
 ]
 
+/**
+ * Une donnée relue du stockage vient du disque de l'utilisateur : elle peut dater
+ * d'une version antérieure du logiciel, avoir été modifiée à la main, ou être
+ * tronquée. On vérifie donc sa forme avant de s'en servir — sinon la page plante
+ * au premier `.toLowerCase()` sur un champ absent, et l'atelier n'a plus d'écran.
+ */
+function estListeDeCommandes(v: unknown): v is Commande[] {
+  return Array.isArray(v) && v.every((c) =>
+    c !== null && typeof c === 'object' &&
+    typeof (c as Commande).id === 'string' &&
+    typeof (c as Commande).client === 'string' &&
+    typeof (c as Commande).quantiteKg === 'number' &&
+    Number.isFinite((c as Commande).quantiteKg) &&
+    typeof (c as Commande).typeMouture === 'string' &&
+    typeof (c as Commande).statut === 'string' &&
+    typeof (c as Commande).dateLivraison === 'string' &&
+    typeof (c as Commande).montantFCFA === 'number' &&
+    Number.isFinite((c as Commande).montantFCFA)
+  )
+}
+
 const STATUT_CFG: Record<string, { color: string; bg: string }> = {
   'En attente': { color: '#fb923c', bg: 'rgba(251,146,60,0.18)' },
   'En cours':   { color: '#60a5fa', bg: 'rgba(96,165,250,0.18)' },
@@ -57,7 +81,30 @@ const S = {
 }
 
 export default function CommandesPage() {
-  const [commandes, setCommandes] = useState<Commande[]>(COMMANDES_INITIALES)
+  const { valeur: commandes, ecrire } = useDonneesPersistees<Commande[]>(
+    'commandes',
+    COMMANDES_INITIALES,
+    estListeDeCommandes
+  )
+
+  /**
+   * Toute modification passe par ici : on écrit D'ABORD, et on ne confirme à
+   * l'opérateur que si l'écriture a réussi. C'est l'inverse de ce que faisait la
+   * page — elle annonçait « créée » sans jamais rien enregistrer.
+   */
+  function enregistrer(suivant: Commande[], succes: string): boolean {
+    const echec = ecrire(suivant)
+    if (!echec) {
+      toast.success(succes)
+      return true
+    }
+    toast.error(
+      echec.cause === 'quota'
+        ? "Mémoire pleine : la commande n'a PAS été enregistrée. Notez-la, puis libérez de l'espace."
+        : "Enregistrement impossible : la commande n'a PAS été enregistrée. Évitez la navigation privée, puis rechargez."
+    )
+    return false
+  }
   const [search, setSearch] = useState('')
   const [filtreStatut, setFiltreStatut] = useState('Tous')
   const [filtreType, setFiltreType] = useState('Tous')
@@ -77,23 +124,29 @@ export default function CommandesPage() {
   const qtyTotale = commandes.filter(c => c.statut !== 'Annulée').reduce((s, c) => s + c.quantiteKg, 0)
 
   function marquerPrete(id: string) {
-    setCommandes(prev => prev.map(c => c.id === id ? { ...c, statut: 'Prête' } : c))
-    toast.success(`Commande ${id} marquée comme prête`)
+    const suivant = commandes.map(c => c.id === id ? { ...c, statut: 'Prête' as const } : c)
+    enregistrer(suivant, `Commande ${id} marquée comme prête`)
   }
 
   function ajouterCommande() {
-    if (!form.client || !form.quantiteKg) { toast.error('Remplis tous les champs'); return }
-    const newId = `CMD-${String(commandes.length + 1).padStart(3, '0')}`
-    const montant = Math.round(parseFloat(form.quantiteKg) * 150)
-    setCommandes(prev => [...prev, {
-      id: newId, client: form.client, quantiteKg: parseFloat(form.quantiteKg),
+    if (!form.client.trim()) { toast.error('Indique le client'); return }
+    const quantite = lireQuantite(form.quantiteKg)
+    if (quantite === null) { toast.error('Quantité invalide — exemple : 1 250,75'); return }
+
+    const newId = prochainIdentifiant(commandes.map(c => c.id))
+    const suivant: Commande[] = [...commandes, {
+      id: newId, client: form.client.trim(), quantiteKg: quantite,
       typeMouture: form.typeMouture, statut: 'En attente',
       dateLivraison: form.dateLivraison || new Date(Date.now() + 86400000 * 3).toLocaleDateString('fr-FR'),
-      montantFCFA: montant,
-    }])
-    toast.success(`Commande ${newId} créée`)
-    setShowModal(false)
-    setForm({ client: '', quantiteKg: '', typeMouture: 'Farine blanche', dateLivraison: '' })
+      montantFCFA: Math.round(quantite * 150),
+    }]
+
+    // Le formulaire n'est vidé QUE si la commande est bien enregistrée : sinon
+    // l'opérateur perdrait sa saisie en plus de sa commande.
+    if (enregistrer(suivant, `Commande ${newId} créée`)) {
+      setShowModal(false)
+      setForm({ client: '', quantiteKg: '', typeMouture: 'Farine blanche', dateLivraison: '' })
+    }
   }
 
   return (
@@ -207,7 +260,15 @@ export default function CommandesPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <input placeholder="Nom du client" value={form.client} onChange={e => setForm(f => ({ ...f, client: e.target.value }))} style={S.input} />
-              <input type="number" placeholder="Quantité (kg)" value={form.quantiteKg} onChange={e => setForm(f => ({ ...f, quantiteKg: e.target.value }))} style={S.input} />
+              <input
+                type="text"
+                inputMode="decimal"
+                placeholder="Quantité en kg — ex. 1 250,75"
+                aria-label="Quantité en kilogrammes"
+                value={form.quantiteKg}
+                onChange={e => setForm(f => ({ ...f, quantiteKg: e.target.value }))}
+                style={S.input}
+              />
               <select value={form.typeMouture} onChange={e => setForm(f => ({ ...f, typeMouture: e.target.value }))} style={{ ...S.input, cursor: 'pointer' }}>
                 {TYPES.slice(1).map(t => <option key={t} style={{ backgroundColor: '#0A1628' }}>{t}</option>)}
               </select>
