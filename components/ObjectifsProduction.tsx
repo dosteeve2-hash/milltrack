@@ -110,7 +110,7 @@ export default function ObjectifsProduction() {
 
       {/* KPIs résumé */}
       <div style={{
-        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem',
+        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem',
         marginTop: '1.25rem', paddingTop: '1rem',
         borderTop: '1px solid rgba(255,255,255,0.07)',
       }}>
