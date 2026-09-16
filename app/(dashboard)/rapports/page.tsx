@@ -244,7 +244,7 @@ export default function RapportsPage() {
       </div>
 
       {/* ── KPI Cards ─────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16, marginBottom: '2rem' }}>
         {kpis.map((k, i) => (
           <motion.div
             key={k.label} custom={i} variants={fadeUp} initial="hidden" animate="show"
@@ -437,7 +437,7 @@ export default function RapportsPage() {
         <h2 style={{ fontSize: 13, fontWeight: 700, color: MUTED, marginBottom: '1rem' }}>
           ⚡ Indicateurs de performance
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16 }}>
           {[
             {
               label: 'Meilleur jour de la semaine',
