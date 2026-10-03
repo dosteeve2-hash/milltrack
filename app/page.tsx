@@ -21,8 +21,8 @@ const features = [
   },
   {
     icon: BarChart3,
-    title: 'Production temps réel',
-    desc: 'Monitoring en direct des lignes de production. Alertes automatiques sur anomalies.',
+    title: 'Suivi de production',
+    desc: 'Suivez les lignes de production et consultez les données de production dans MillTrack.',
   },
   {
     icon: Wrench,
@@ -32,14 +32,14 @@ const features = [
   {
     icon: TrendingUp,
     title: 'Rendements analytics',
-    desc: 'Dashboard rendements par lot, machine et période. Benchmarks sectoriels BF.',
+    desc: 'Consultez les rendements par lot, machine et période.',
   },
 ]
 
 const stats = [
-  { value: '50+', label: 'Minoteries & huileries BF' },
-  { value: '100%', label: 'Traçabilité export' },
-  { value: '<2min', label: 'Alertes pannes' },
+  { value: 'MVP', label: 'Pilote recherché' },
+  { value: 'Lots', label: 'Suivi de production' },
+  { value: 'Machines', label: 'Maintenance' },
 ]
 
 const stagger = {
@@ -84,14 +84,14 @@ export default function LandingPage() {
           </motion.div>
 
           <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl font-bold leading-tight mb-6">
-            Tracez chaque lot.{' '}
-            <span style={{ color: '#D4AF37' }}>Optimisez</span>{' '}
+            Suivez chaque lot.{' '}
+            <span style={{ color: '#D4AF37' }}>Pilotez</span>{' '}
             chaque transformation.
           </motion.h1>
 
           <motion.p variants={fadeUp} className="text-xl max-w-2xl mx-auto mb-10 opacity-70">
             Plateforme SaaS B2B pour minoteries et huileries du Burkina Faso.
-            Suivi de production, maintenance machines et analytics rendements — en temps réel.
+            Suivi de production, maintenance machines et analyses de rendement.
           </motion.p>
 
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -167,7 +167,7 @@ export default function LandingPage() {
         >
           <CheckCircle2 className="w-12 h-12 mx-auto mb-4" style={{ color: '#D4AF37' }} />
           <h2 className="text-3xl font-bold mb-4">Prêt à moderniser votre usine ?</h2>
-          <p className="opacity-60 mb-8">Rejoignez les usines de transformation qui pilotent leur production avec MillTrack.</p>
+          <p className="opacity-60 mb-8">Conçu pour les PME africaines.</p>
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg"
