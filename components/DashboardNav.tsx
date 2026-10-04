@@ -15,10 +15,13 @@ import {
   Cog,
   Settings,
   ShoppingCart,
+  LogOut,
   Menu,
   X,
   type LucideIcon,
 } from 'lucide-react'
+
+import { signOut } from '@/app/actions/auth'
 
 export type NavItem = { href: string; label: string; icon: LucideIcon }
 
@@ -80,9 +83,23 @@ function Entete() {
 }
 
 function PiedDePage() {
+  // La deconnexion vit ici, et non dans le layout : PiedDePage est rendu par la
+  // barre laterale ET par le tiroir, donc le bouton existe aussi sous 768 px.
+  // Le placer dans le layout l'aurait laisse hors de portee sur telephone —
+  // exactement la cible de VISION.md §4.
   return (
-    <div className="px-6 pt-4 border-t" style={{ borderColor: BORDURE }}>
-      <p className="text-xs" style={{ color: 'rgba(240,244,255,0.3)' }}>
+    <div className="px-3 pt-4 border-t space-y-3" style={{ borderColor: BORDURE }}>
+      <form action={signOut}>
+        <button
+          type="submit"
+          className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all hover:bg-white/5"
+          style={{ color: 'rgba(240,244,255,0.6)' }}
+        >
+          <LogOut className="w-4 h-4 flex-shrink-0" />
+          Se déconnecter
+        </button>
+      </form>
+      <p className="text-xs px-3" style={{ color: 'rgba(240,244,255,0.3)' }}>
         FORGE Afrika · v1.0
       </p>
     </div>
